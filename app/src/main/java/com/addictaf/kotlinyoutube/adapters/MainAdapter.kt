@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.addictaf.kotlinyoutube.R
 import com.addictaf.kotlinyoutube.activities.CourseDetailActivity
 import com.addictaf.kotlinyoutube.models.HomeFeed
+import com.addictaf.kotlinyoutube.models.Video
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.video_row.view.*
 
@@ -30,6 +31,8 @@ class MainAdapter(val homeFeed: HomeFeed): RecyclerView.Adapter<CustomViewHolder
 
         Picasso.get().load(video.channel.profileImageUrl).into(channelProfileImage)
 
+        holder.video = video
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): CustomViewHolder {
@@ -43,13 +46,20 @@ class MainAdapter(val homeFeed: HomeFeed): RecyclerView.Adapter<CustomViewHolder
     }
 }
 
-class CustomViewHolder(val view: View): RecyclerView.ViewHolder(view) {
+class CustomViewHolder(val view: View, var video: Video? =null): RecyclerView.ViewHolder(view) {
+
+    companion object {
+        val VIDEO_TITLE_KEY = "VIDEO_TITLE"
+        val VIDEO_ID = "VIDEO_ID"
+    }
 
     init {
         view.setOnClickListener {
             val intent = Intent(view.context, CourseDetailActivity::class.java)
-
+            intent.putExtra(VIDEO_TITLE_KEY, video?.name)
+            intent.putExtra(VIDEO_ID, video?.id)
             view.context.startActivity(intent)
+
         }
     }
 
